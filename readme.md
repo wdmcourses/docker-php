@@ -30,34 +30,34 @@ Usage: ./run.sh { backup | bash | clear | deploy | down | prune | up }
 * docker up / down:
 ```
 # first
-sudo chmod -R 777 . && docker-compose up -d
+sudo chmod -R 777 . && docker compose up -d
 
-docker-compose up -d
-docker-compose down
+docker compose up -d
+docker compose down
 ```
 
 * internal bash:
 ```
-docker-compose exec web bash
+docker compose exec web bash
 exit
 ```
 
 * import db
 ```
 # mariadb
-docker-compose exec -T db mariadb -u root -proot example < backup.sql
+docker compose exec -T db mariadb -u root -proot example < backup.sql
 
 # mysql
-docker-compose exec -T db mysql -u root -proot example < backup.sql
+docker compose exec -T db mysql -u root -proot example < backup.sql
 ```
 
 * export db
 ```
 # mariadb
-docker-compose exec db mariadb-dump -u root -proot example > backup.sql
+docker compose exec db mariadb-dump -u root -proot example > backup.sql
 
 # mysql
-docker-compose exec db mysqldump -u root -proot example > backup.sql
+docker compose exec db mysqldump -u root -proot example > backup.sql
 ```
 
 * remove all images & volumes:

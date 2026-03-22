@@ -10,20 +10,20 @@ compression_options="-t7z -mx=9 -m0=LZMA2 -mmt=on"
 
 # Docker commands
 run_up() {
-  check_deps "docker-compose"
+  check_deps "docker"
   unlock_all
   remove_mysql_socket
-  docker-compose up -d
+  docker compose up -d
 }
 run_down() {
-  check_deps "docker-compose"
+  check_deps "docker"
   unlock_all
   remove_mysql_socket
-  docker-compose down
+  docker compose down
 }
 run_bash() {
-  check_deps "docker-compose"
-  docker-compose exec web bash
+  check_deps "docker"
+  docker compose exec web bash
 }
 run_prune() {
   check_deps "docker"
