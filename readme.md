@@ -3,7 +3,7 @@ Docker configuration for running PHP application with MySQL (MySQLi/PDO) and php
 
 ## Clone
 ```
-git clone https://github.com/agragregra/docker-php . && rm -rf trunk .git readme.md && chmod +x run.sh
+git clone https://github.com/wdmcourses/docker-php . && rm -rf trunk .git readme.md && chmod +x run.sh
 ```
 
 ## Features
