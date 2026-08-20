@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM php:8.3-apache
 
 ENV EXT="mysqli pdo_mysql zip gd mbstring opcache intl"
 
