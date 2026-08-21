@@ -11,7 +11,7 @@ PROD_DB_PASS="dbpassword"
 PROD_DB_NAME="dbname"
 PROD_DB_HOST="localhost"
 
-RSYNC_EXCLUDES=".env.local .env.*.local .git .gitignore var/cache/dev var/log docker-compose.* Dockerfile *.md deploy.sh"
+RSYNC_EXCLUDES=".env.local .env.*.local .git .gitignore var docker-compose.* Dockerfile *.md deploy.sh"
 
 # === Symfony cache (remove for non-Symfony) ===
 docker compose exec -T -w /var/www web php bin/console cache:clear --env=prod --no-debug --no-interaction
