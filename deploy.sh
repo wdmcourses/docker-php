@@ -13,27 +13,21 @@ PROD_DB_HOST="localhost"
 
 RSYNC_EXCLUDES=".env.local .env.*.local .git .gitignore var/cache/dev var/log docker-compose.* Dockerfile *.md deploy.sh"
 
-# === 1. Symfony cache (remove for non-Symfony) ===
+# === Symfony cache (remove for non-Symfony) ===
 docker compose exec -T -w /var/www web php bin/console cache:clear --env=prod --no-debug --no-interaction
 docker compose exec -T -w /var/www web php bin/console cache:warmup --env=prod --no-interaction
 
-# === 2. Export DB ===
-if [ "$1" = "full" ]; then
-  echo "[2/5] Export DB..."
-  docker compose exec -T db mariadb-dump -u root -proot database --no-tablespaces 2>/dev/null \
-    | sed 's/utf8mb4_uca1400_\(ai\|as\)_ci/utf8mb4_unicode_ci/g' \
-    > /tmp/deploy_dump.sql
-fi
-
-# === 3. Rsync ===
-echo "[3/5] Rsync..."
+# === Rsync ===
 EXCLUDE_ARGS=""
 for p in $RSYNC_EXCLUDES; do EXCLUDE_ARGS="$EXCLUDE_ARGS --exclude=$p"; done
 rsync -avz --delete $EXCLUDE_ARGS ./www/ "${SSH_USER}@${SSH_HOST}:${SERVER_PATH}/"
 
-# === 4. Import DB ===
+# === Database ===
 if [ "$1" = "full" ]; then
-  echo "[4/5] Import DB..."
+  docker compose exec -T db mariadb-dump -u root -proot database --no-tablespaces 2>/dev/null \
+    | sed 's/utf8mb4_uca1400_\(ai\|as\)_ci/utf8mb4_unicode_ci/g' \
+    > /tmp/deploy_dump.sql
+  echo "[3/4] Import DB..."
   scp /tmp/deploy_dump.sql "${SSH_USER}@${SSH_HOST}:/tmp/_db.sql"
   ssh "${SSH_USER}@${SSH_HOST}" "
     mysql -u ${PROD_DB_USER} -p'${PROD_DB_PASS}' -h ${PROD_DB_HOST} -e 'SET FOREIGN_KEY_CHECKS=0;' ${PROD_DB_NAME} 2>/dev/null
@@ -45,8 +39,7 @@ if [ "$1" = "full" ]; then
   "
 fi
 
-# === 5. Cleanup ===
-echo "[5/5] Cleanup..."
+# === Cleanup ===
 rm -f /tmp/deploy_dump.sql
 
 echo "Done."
