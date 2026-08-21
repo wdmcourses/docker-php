@@ -1,11 +1,10 @@
 services:
   db:
-    # image: mysql:8.0
     image: mariadb:11.4
     environment:
       MYSQL_USER: user
       MYSQL_PASSWORD: user
-      MYSQL_DATABASE: example
+      MYSQL_DATABASE: database
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - ./data:/var/lib/mysql

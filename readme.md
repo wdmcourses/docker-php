@@ -24,7 +24,7 @@ git clone https://github.com/wdmcourses/docker-php . && rm -rf trunk .git && chm
 
 * ./run.sh args
 ```
-Usage: ./run.sh { backup | bash | clear | deploy | down | prune | up }
+Usage: ./run.sh { backup | bash | clear | deploy(+full) | down | prune | up }
 ```
 
 * docker up / down:
@@ -45,19 +45,19 @@ exit
 * import db
 ```
 # mariadb
-docker compose exec -T db mariadb -u root -proot example < backup.sql
+docker compose exec -T db mariadb -u root -proot database < backup.sql
 
 # mysql
-docker compose exec -T db mysql -u root -proot example < backup.sql
+docker compose exec -T db mysql -u root -proot database < backup.sql
 ```
 
 * export db
 ```
 # mariadb
-docker compose exec db mariadb-dump -u root -proot example > backup.sql
+docker compose exec db mariadb-dump -u root -proot database > backup.sql
 
 # mysql
-docker compose exec db mysqldump -u root -proot example > backup.sql
+docker compose exec db mysqldump -u root -proot database > backup.sql
 ```
 
 * remove all images & volumes:
@@ -68,6 +68,7 @@ docker system prune -af --volumes
 ## Deploy
 
 Deploy settings are in `deploy.sh`.
+With database: `./deploy.sh full` or `./run.sh deployfull`
 
 ## Troubleshooting
 ```

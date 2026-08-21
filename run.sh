@@ -39,6 +39,9 @@ run_backup() {
 run_deploy() {
   bash deploy.sh
 }
+run_deployfull() {
+  bash deploy.sh full
+}
 run_clear() {
   unlock_all
   remove_mysql_socket
