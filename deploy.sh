@@ -5,7 +5,6 @@ set -e
 SSH_USER="user"
 SSH_HOST="example.com"
 SERVER_PATH="/home/user/project"
-SERVER_URL="https://example.com"
 
 PROD_DB_USER="dbuser"
 PROD_DB_PASS="dbpassword"
@@ -46,4 +45,4 @@ ssh "${SSH_USER}@${SSH_HOST}" "
 echo "[5/5] Cleanup..."
 rm -f /tmp/deploy_dump.sql
 
-echo "Done: ${SERVER_URL}"
+echo "Done."
