@@ -65,12 +65,16 @@ docker compose exec db mysqldump -u root -proot example > backup.sql
 docker system prune -af --volumes
 ```
 
+## Deploy
+
+Deploy settings are in `deploy.sh`.
+
 ## Troubleshooting
 ```
 chmod -R 777 .
 linux: sed -i 's/\r$//' run.sh
 macos: sed -i '' 's/\r$//' run.sh
-docker pull php:8.2-apache
+docker pull php:8.3-apache
 ```
 
 ## Troubleshooting NTFS /mnt Issues

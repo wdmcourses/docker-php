@@ -3,9 +3,6 @@
 set -e # Exit on error
 
 # Configuration variables
-output_dir="www/"
-deploy_server="user@server.com:path/to/"
-rsync_options="-avz --delete --delete-excluded --exclude=.env.local --include=*.htaccess"
 compression_options="-t7z -mx=9 -m0=LZMA2 -mmt=on"
 
 # Docker commands
@@ -40,8 +37,7 @@ run_backup() {
   $(sudo_prefix) 7z a $compression_options -x!"$dir_name/node_modules" "./$dir_name-$current_date.7z" "$(pwd)"
 }
 run_deploy() {
-  check_deps "rsync"
-  rsync $rsync_options "$output_dir" "$deploy_server" || { echo "Deploy failed: rsync error"; exit 1; }
+  bash deploy.sh
 }
 run_clear() {
   unlock_all
