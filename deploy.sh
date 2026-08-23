@@ -5,6 +5,7 @@ set -e
 SSH_USER="user"
 SSH_HOST="example.com"
 SERVER_PATH="/home/user/project"
+SERVER_PHP="php8.5"
 
 PROD_DB_USER="dbuser"
 PROD_DB_PASS="dbpassword"
@@ -13,14 +14,17 @@ PROD_DB_HOST="localhost"
 
 RSYNC_EXCLUDES=".env.local .env.*.local .git .gitignore var docker-compose.* Dockerfile *.md deploy.sh"
 
-# === Symfony cache (remove for non-Symfony) ===
-docker compose exec -T -w /var/www web php bin/console cache:clear --env=prod --no-debug --no-interaction
-docker compose exec -T -w /var/www web php bin/console cache:warmup --env=prod --no-interaction
-
 # === Rsync ===
 EXCLUDE_ARGS=""
 for p in $RSYNC_EXCLUDES; do EXCLUDE_ARGS="$EXCLUDE_ARGS --exclude=$p"; done
 rsync -avz --delete $EXCLUDE_ARGS ./www/ "${SSH_USER}@${SSH_HOST}:${SERVER_PATH}/"
+
+# === Symfony cache on server (remove for non-Symfony) ===
+echo "Clearing Symfony cache on server..."
+if ! ssh "${SSH_USER}@${SSH_HOST}" "cd '${SERVER_PATH}' && ${SERVER_PHP} bin/console cache:clear --env=prod --no-debug --no-interaction && ${SERVER_PHP} bin/console cache:warmup --env=prod --no-interaction"; then
+  echo "ERROR: Server cache clear/warmup failed." >&2
+  exit 1
+fi
 
 # === Database ===
 if [ "$1" = "full" ]; then

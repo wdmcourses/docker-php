@@ -75,7 +75,7 @@ With database: `./deploy.sh full` or `./run.sh deployfull`
 chmod -R 777 .
 linux: sed -i 's/\r$//' run.sh
 macos: sed -i '' 's/\r$//' run.sh
-docker pull php:8.3-apache
+docker pull php:8.5-apache
 ```
 
 ## Troubleshooting NTFS /mnt Issues
