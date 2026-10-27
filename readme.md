@@ -42,6 +42,15 @@ docker compose exec web bash
 exit
 ```
 
+* drop db
+```
+# mariadb
+docker compose exec -T db mariadb -u root -proot -e "DROP DATABASE database; CREATE DATABASE database;"
+
+# mysql
+docker compose exec -T db mysql -u root -proot -e "DROP DATABASE database; CREATE DATABASE database;"
+```
+
 * import db
 ```
 # mariadb
